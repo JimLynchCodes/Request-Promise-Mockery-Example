@@ -1,0 +1,10 @@
+{
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "6.2.2",
+    "mockery": "^2.1.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
+  }
+}
