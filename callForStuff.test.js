@@ -1,24 +1,32 @@
 
-const expect = require('chai').expect
-const callForStuff = require('./callForStuff')
 const mockery = require('mockery')
+const expect = require('chai').expect
 
-var requireMock = {
-    request: function (path, cb) { return 42; }
-};
-mockery.registerMock('request-promise', requireMock);
-
-const desiredResponse = 42;
-mockery.registerMock('request-promise', desiredResponse);
-  mockery.registerAllowable('path-under-test', true);
+function setUpMocks(desiredResponse) {
+  mockery.registerMock('request-promise', desiredResponse);
+  mockery.registerAllowable('./callForStuff', true);
+  return require('./callForStuff');
+}
 
 describe('callForStuff', () => {
 
   it("should call for stuff and return said stuff.", async () => {
 
-    const result = await callForStuff('callForStuff');
-    
-    expect(result).to.equal(42)
+    let response = {
+        response: {
+          body: {
+            "foo": "bar"
+          },
+          statusCode: 200,
+        },
+      };
+
+      const callForStuff = setUpMocks(function request(){return Promise.resolve(response)});
+      return callForStuff("ok").then(result => {
+        console.log('result ', result.body)
+
+        expect(result).to.equal({"foo": "bar"})
+      });
   
   })
 
