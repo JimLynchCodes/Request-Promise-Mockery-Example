@@ -1,8 +1,13 @@
 const Mocha = require('mocha')
 const runner = new Mocha({})
+const mockery = require('mockery')
 
-console.log('ok')
 runner.addFile('./callForStuff.test.js')
+
+mockery.enable({
+    warnOnReplace: false,
+    warnOnUnregistered: false
+});
 
 runner.run(failures => {
   if (failures) {
